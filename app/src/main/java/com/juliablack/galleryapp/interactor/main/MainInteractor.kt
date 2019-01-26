@@ -4,6 +4,6 @@ import io.reactivex.Single
 
 interface MainInteractor {
 
-    fun shouldShowDialogRate() : Single<Boolean>
-
+    fun shouldShowDialogRate(): Single<Boolean>
+    fun signIn(): Single<Pair<String?, String?>>?
 }

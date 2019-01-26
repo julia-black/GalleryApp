@@ -9,11 +9,10 @@ class MainPresenterImpl(private val view: MainPresenter.View, private val intera
     private val compositeDisposable = CompositeDisposable()
 
     override fun onStart() {
-
-        interactor.shouldShowDialogRate().subscribe(
+        compositeDisposable.add(interactor.shouldShowDialogRate().subscribe(
             { result -> if (result) view.showDialogRate() },
             { error -> Log.d("MainPresenter", "error: ${error.message}") }
-        )
+        ))
     }
 
     override fun onStop() {
@@ -28,5 +27,15 @@ class MainPresenterImpl(private val view: MainPresenter.View, private val intera
 
     override fun onClickPositiveDialogRate() {
         Log.d(logTag, "Positive result")
+    }
+
+    override fun onFieldsFilled() {
+        view.showButtonSignIn()
+        Log.d(logTag, "on Fields filled")
+    }
+
+    override fun onClickSign() {
+        view.goToGalleryActivity()
+        Log.d(logTag, "click sign")
     }
 }
