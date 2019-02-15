@@ -1,3 +1,5 @@
 <resources>
     <string name="app_name">GalleryApp</string>
+    <string name="flick_api_key">67178c7d31555cce157ff49f2136f49a</string>
+    <string name="flick_secret">3f53a208851307f5</string>
 </resources>

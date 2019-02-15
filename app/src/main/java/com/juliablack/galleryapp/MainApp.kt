@@ -3,7 +3,7 @@ package com.juliablack.galleryapp
 import android.app.Application
 import android.util.Log
 import com.juliablack.galleryapp.interactor.appStart.AppStartInteractorImpl
-import com.juliablack.galleryapp.repository.LaunchCountRepositoryImpl
+import com.juliablack.galleryapp.data.launch.LaunchCountRepositoryImpl
 import com.juliablack.galleryapp.util.PreferenceHelper
 import io.reactivex.CompletableObserver
 import io.reactivex.disposables.Disposable
@@ -25,11 +25,11 @@ class MainApp : Application() {
                 Log.d(LOG_TAG, "onComplete")
             }
 
-            override fun onSubscribe(d: Disposable?) {
+            override fun onSubscribe(d: Disposable) {
                 Log.d(LOG_TAG, "onSubscribe")
             }
 
-            override fun onError(e: Throwable?) {
+            override fun onError(e: Throwable) {
                 Log.d(LOG_TAG, "onError")
             }
         })

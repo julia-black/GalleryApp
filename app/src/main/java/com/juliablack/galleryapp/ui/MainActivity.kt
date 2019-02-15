@@ -5,28 +5,36 @@ import android.os.Bundle
 import android.view.View
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
+import androidx.databinding.DataBindingUtil
+import androidx.lifecycle.ViewModelProviders
 import com.jakewharton.rxbinding.widget.RxTextView
+import com.juliablack.galleryapp.R
+import com.juliablack.galleryapp.data.launch.LaunchCountRepositoryImpl
+import com.juliablack.galleryapp.databinding.ActivityMainBinding
 import com.juliablack.galleryapp.interactor.main.MainInteractorImpl
 import com.juliablack.galleryapp.presenter.MainPresenter
 import com.juliablack.galleryapp.presenter.MainPresenterImpl
-import com.juliablack.galleryapp.repository.LaunchCountRepositoryImpl
 import com.juliablack.galleryapp.util.PreferenceHelper
+import com.juliablack.galleryapp.viewmodel.MainActivityVM
 import kotlinx.android.synthetic.main.activity_main.*
 import rx.Observable
 import rx.Subscription
 import java.util.concurrent.TimeUnit
 
-
 class MainActivity : AppCompatActivity(), MainPresenter.View {
 
     private lateinit var subscription: Subscription
     private lateinit var presenter: MainPresenter
+    private lateinit var binding: ActivityMainBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(com.juliablack.galleryapp.R.layout.activity_main)
-        presenter = createPresenter()
+        val viewModel = ViewModelProviders.of(this).get(MainActivityVM::class.java)
 
+        binding = DataBindingUtil.setContentView(this, R.layout.activity_main)
+        binding.vm = viewModel
+        presenter = createPresenter()
     }
 
     private fun watchLogin() {
@@ -35,6 +43,10 @@ class MainActivity : AppCompatActivity(), MainPresenter.View {
         subscription = Observable.combineLatest(observableLogin, observablePassword) { login, password ->
             login.isNotBlank() && password.isNotBlank()
         }.debounce(1, TimeUnit.SECONDS).subscribe { isNotBlank -> if (isNotBlank) presenter.onFieldsFilled() }
+
+        observableLogin.subscribe {
+            binding.vm!!.setLogin(it)
+        }
     }
 
     private fun createPresenter(): MainPresenter {

@@ -1,10 +1,12 @@
-package com.juliablack.galleryapp.repository
+package com.juliablack.galleryapp.data.launch
 
+import com.juliablack.galleryapp.repository.LaunchCountRepository
 import com.juliablack.galleryapp.util.PreferenceHelper
 import io.reactivex.Completable
 import io.reactivex.Single
 
-class LaunchCountRepositoryImpl(private val preferenceHelper: PreferenceHelper) : LaunchCountRepository {
+class LaunchCountRepositoryImpl(private val preferenceHelper: PreferenceHelper) :
+    LaunchCountRepository {
 
     override fun getCountLaunch(): Single<Int> {
         return preferenceHelper.getInt(KEY_LAUNCH_COUNT,0)
